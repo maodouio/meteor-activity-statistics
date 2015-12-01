@@ -1,0 +1,61 @@
+<template name="activityStatistics">
+  <div class="col-xs-12">
+    <h1>活动报名列表</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr  style="background: #ccc">
+          <th>微信</th>
+          <th>姓名</th>
+          <th>城市</th>
+          <th>手机号码</th>
+          <th>电子邮箱</th>
+        </tr>
+      </thead>
+        <tbody>
+          {{#each enrollments}}
+            <tr>
+              <td><img src="{{headimgurl}}" style="width: 35px; height: 35px; border-radius: 50%;"/></td>
+              {{#with user}}
+              <td>{{profile.nickname}}</td>
+              <td>{{profile.country}}</td>
+              {{/with}}
+
+              {{#with userprofile}}
+              <td>{{cellNumber}}</td>
+              <td>{{email}}</td>
+              {{/with}}
+            </tr>
+          {{/each}}
+        </tbody>
+    </table>
+
+    <h1>活动签到列表</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr style="background: #ccc">
+          <th>微信</th>
+          <th>姓名</th>
+          <th>城市</th>
+          <th>手机号码</th>
+          <th>电子邮箱</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each registrations}}
+          <tr>
+            <td><img src="{{headimgurl}}" style="width: 35px; height: 35px; border-radius: 50%;"/></td>
+            {{#with user}}
+            <td>{{profile.nickname}}</td>
+            <td>{{profile.country}}</td>
+            {{/with}}
+
+            {{#with userprofile}}
+            <td>{{cellNumber}}</td>
+            <td>{{email}}</td>
+            {{/with}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</template>
