@@ -20,6 +20,7 @@ Package.onUse(function(api) {
      // admin screens
      'client/activities/activity_statistics.html',
      'client/activities/activity_statistics.js',
+     'client/startup.js',
    ], ["client"]);
 
   api.addFiles("lib/routes.js");

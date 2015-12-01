@@ -6,7 +6,8 @@
         <tr  style="background: #ccc">
           <th>微信</th>
           <th>姓名</th>
-          <th>城市</th>
+          <!-- <th>城市</th> -->
+          <th>是否签到</th>
           <th>手机号码</th>
           <th>电子邮箱</th>
         </tr>
@@ -16,13 +17,13 @@
             <tr>
               <td><img src="{{headimgurl}}" style="width: 35px; height: 35px; border-radius: 50%;"/></td>
               {{#with user}}
-              <td>{{profile.nickname}}</td>
-              <td>{{profile.country}}</td>
+                <td>{{profile.nickname}}</td>
+                <!-- <td>{{profile.country}}</td> -->
+                <td>{{isRegister}}</td>
               {{/with}}
-
               {{#with userprofile}}
-              <td>{{cellNumber}}</td>
-              <td>{{email}}</td>
+                <td>{{cellNumber}}</td>
+                <td>{{email}}</td>
               {{/with}}
             </tr>
           {{/each}}
@@ -45,13 +46,12 @@
           <tr>
             <td><img src="{{headimgurl}}" style="width: 35px; height: 35px; border-radius: 50%;"/></td>
             {{#with user}}
-            <td>{{profile.nickname}}</td>
-            <td>{{profile.country}}</td>
+              <td>{{profile.nickname}}</td>
+              <td>{{profile.country}}</td>
             {{/with}}
-
             {{#with userprofile}}
-            <td>{{cellNumber}}</td>
-            <td>{{email}}</td>
+              <td>{{cellNumber}}</td>
+              <td>{{email}}</td>
             {{/with}}
           </tr>
         {{/each}}
