@@ -1,20 +1,20 @@
 <template name="activityStatistics">
   <div class="col-xs-12">
-    <h1>活动报名列表</h1>
-    <table class="table table-striped">
+    <h3>活动报名列表</h3>
+    <table class="table table-striped" id="customers">
       <thead>
-        <tr  style="background: #ccc">
-          <th>微信</th>
-          <th>姓名</th>
+        <tr>
+          <th datatype="text" style="width: 40px;">微信</th>
+          <th datatype="text">姓名</th>
           <!-- <th>城市</th> -->
-          <th>是否签到</th>
-          <th>手机号码</th>
-          <th>电子邮箱</th>
+          <th datatype="text" style="width: 80px;">签到状态</th>
+          <th datatype="text">手机号码</th>
+          <th datatype="text">电子邮箱</th>
         </tr>
       </thead>
-        <tbody>
+        <tbody style="border-style:ridge;" >
           {{#each enrollments}}
-            <tr>
+            <tr class="alt">
               <td><img src="{{headimgurl}}" style="width: 35px; height: 35px; border-radius: 50%;"/></td>
               {{#with user}}
                 <td>{{profile.nickname}}</td>
@@ -30,10 +30,87 @@
         </tbody>
     </table>
 
-    <h1>活动签到列表</h1>
+    <script>
+      $(function() {
+      	tableSort($('table'));
+      })
+
+      function tableSort(jqTableObj) {
+      	jqTableObj.find('thead th').click(
+      		function(){
+      			var dataType = $(this).attr('dataType');
+      			var tableObj = $(this).closest('table');
+      			var index = tableObj.find('thead th').index(this) + 1;
+      			var arr = [];
+      			var row = tableObj.find('tbody tr');
+
+      			$.each(row, function(i){arr[i] = row[i]});
+
+      			if($(this).hasClass('current')){
+      				arr.reverse();
+      			} else {
+      				arr.sort(Utils.sortStr(index, dataType))
+
+      				tableObj.find('thead th').removeClass('current');
+      				$(this).addClass('current');
+      			}
+
+      			var fragment = document.createDocumentFragment();
+
+      			$.each(arr, function(i){
+      				fragment.appendChild(arr[i]);
+      			});
+
+      			tableObj.find('tbody').append(fragment);
+      		}
+      	);
+
+      	var Utils = (function() {
+      		function sortStr(index, dataType){
+      			return function(a, b){
+      				var aText=$(a).find('td:nth-child(' + index + ')').attr('_order') || $(a).find('td:nth-child(' + index + ')').text();
+      				var bText=$(b).find('td:nth-child(' + index + ')').attr('_order') || $(b).find('td:nth-child(' + index + ')').text();
+
+      				if(dataType != 'text'){
+      					aText=parseNonText(aText, dataType);
+      					bText=parseNonText(bText, dataType);
+
+      					return aText > bText ? -1 : bText > aText ? 1 : 0;
+      				} else {
+      					return aText.localeCompare(bText)
+      				}
+      			}
+      		}
+
+      		function parseNonText(data, dataType){
+      			switch(dataType){
+      				case 'int':
+      					return parseInt(data) || 0
+      				case 'float':
+      					return parseFloat(data) || 0
+      				default :
+      				return filterStr(data)
+      			}
+      		}
+
+      		//过滤中文字符和$
+      		function filterStr(data){
+      			if (!data) {
+      				return 0;
+      			}
+
+      			return parseFloat(data.replace(/^[\$a-zA-z\u4e00-\u9fa5 ]*(.*?)[a-zA-z\u4e00-\u9fa5 ]*$/,'$1'));
+      		}
+
+      		return {'sortStr' : sortStr};
+      	})();
+      }
+    </script>
+
+    <h3>活动签到列表</h3>
     <table class="table table-striped">
       <thead>
-        <tr style="background: #ccc">
+        <tr>
           <th>微信</th>
           <th>姓名</th>
           <th>城市</th>

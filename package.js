@@ -21,6 +21,7 @@ Package.onUse(function(api) {
      'client/activities/activity_statistics.html',
      'client/activities/activity_statistics.js',
      'client/startup.js',
+     'client/activities/activity_statistics.css',
    ], ["client"]);
 
   api.addFiles("lib/routes.js");
