@@ -1,114 +1,39 @@
 <template name="activityStatistics">
-  <div class="col-xs-12">
-    <h3>活动报名列表</h3>
-    <table class="table table-striped" id="customers">
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-condensed">
+      <caption><h3><b>活动报名列表</b></h3></caption>
       <thead>
         <tr>
-          <th datatype="text" style="width: 40px;">微信</th>
-          <th datatype="text">姓名</th>
-          <!-- <th>城市</th> -->
-          <th datatype="text" style="width: 80px;">签到状态</th>
+          <th datatype="text">微信</th>
+          <th scope="col">微信昵称</th>
+          <th datatype="text">签到状态</th>
+          <th scope="col">姓名</th>
           <th datatype="text">手机号码</th>
-          <th datatype="text">电子邮箱</th>
+          <th scope="col">电子邮箱</th>
         </tr>
       </thead>
-        <tbody style="border-style:ridge;" >
-          {{#each enrollments}}
-            <tr class="alt">
-              <td><img src="{{headimgurl}}" style="width: 35px; height: 35px; border-radius: 50%;"/></td>
-              {{#with user}}
-                <td>{{profile.nickname}}</td>
-                <!-- <td>{{profile.country}}</td> -->
-                <td>{{isRegister}}</td>
-              {{/with}}
-              {{#with userprofile}}
-                <td>{{cellNumber}}</td>
-                <td>{{email}}</td>
-              {{/with}}
-            </tr>
-          {{/each}}
-        </tbody>
+      <tfoot>
+          <td colspan="6">报名统计：</td>
+      </tfoot>
+      <tbody>
+        {{#each enrollments}}
+          <tr>
+            <td><img src="{{headimgurl}}" style="width: 35px; height: 35px; border-radius: 50%;"/></td>
+            {{#with user}}
+              <td>{{profile.nickname}}</td>
+              <td>{{isRegister}}</td>
+            {{/with}}
+            {{#with userprofile}}
+              <td>{{name}}</td>
+              <td>{{cellNumber}}</td>
+              <td>{{email}}</td>
+            {{/with}}
+          </tr>
+        {{/each}}
+      </tbody>
     </table>
-
-    <script>
-      $(function() {
-      	tableSort($('table'));
-      })
-
-      function tableSort(jqTableObj) {
-      	jqTableObj.find('thead th').click(
-      		function(){
-      			var dataType = $(this).attr('dataType');
-      			var tableObj = $(this).closest('table');
-      			var index = tableObj.find('thead th').index(this) + 1;
-      			var arr = [];
-      			var row = tableObj.find('tbody tr');
-
-      			$.each(row, function(i){arr[i] = row[i]});
-
-      			if($(this).hasClass('current')){
-      				arr.reverse();
-      			} else {
-      				arr.sort(Utils.sortStr(index, dataType))
-
-      				tableObj.find('thead th').removeClass('current');
-      				$(this).addClass('current');
-      			}
-
-      			var fragment = document.createDocumentFragment();
-
-      			$.each(arr, function(i){
-      				fragment.appendChild(arr[i]);
-      			});
-
-      			tableObj.find('tbody').append(fragment);
-      		}
-      	);
-
-      	var Utils = (function() {
-      		function sortStr(index, dataType){
-      			return function(a, b){
-      				var aText=$(a).find('td:nth-child(' + index + ')').attr('_order') || $(a).find('td:nth-child(' + index + ')').text();
-      				var bText=$(b).find('td:nth-child(' + index + ')').attr('_order') || $(b).find('td:nth-child(' + index + ')').text();
-
-      				if(dataType != 'text'){
-      					aText=parseNonText(aText, dataType);
-      					bText=parseNonText(bText, dataType);
-
-      					return aText > bText ? -1 : bText > aText ? 1 : 0;
-      				} else {
-      					return aText.localeCompare(bText)
-      				}
-      			}
-      		}
-
-      		function parseNonText(data, dataType){
-      			switch(dataType){
-      				case 'int':
-      					return parseInt(data) || 0
-      				case 'float':
-      					return parseFloat(data) || 0
-      				default :
-      				return filterStr(data)
-      			}
-      		}
-
-      		//过滤中文字符和$
-      		function filterStr(data){
-      			if (!data) {
-      				return 0;
-      			}
-
-      			return parseFloat(data.replace(/^[\$a-zA-z\u4e00-\u9fa5 ]*(.*?)[a-zA-z\u4e00-\u9fa5 ]*$/,'$1'));
-      		}
-
-      		return {'sortStr' : sortStr};
-      	})();
-      }
-    </script>
-
-    <h3>活动签到列表</h3>
     <table class="table table-striped">
+      <caption><h3><b>活动签到列表</b></h3></caption>
       <thead>
         <tr>
           <th>微信</th>
@@ -135,4 +60,80 @@
       </tbody>
     </table>
   </div>
+  <script>
+    $(function() {
+      tableSort($('table'));
+    })
+
+    function tableSort(jqTableObj) {
+      jqTableObj.find('thead th').click(
+        function(){
+          var dataType = $(this).attr('dataType');
+          var tableObj = $(this).closest('table');
+          var index = tableObj.find('thead th').index(this) + 1;
+          var arr = [];
+          var row = tableObj.find('tbody tr');
+
+          $.each(row, function(i){arr[i] = row[i]});
+
+          if($(this).hasClass('current')){
+            arr.reverse();
+          } else {
+            arr.sort(Utils.sortStr(index, dataType))
+
+            tableObj.find('thead th').removeClass('current');
+            $(this).addClass('current');
+          }
+
+          var fragment = document.createDocumentFragment();
+
+          $.each(arr, function(i){
+            fragment.appendChild(arr[i]);
+          });
+
+          tableObj.find('tbody').append(fragment);
+        }
+      );
+
+      var Utils = (function() {
+        function sortStr(index, dataType){
+          return function(a, b){
+            var aText=$(a).find('td:nth-child(' + index + ')').attr('_order') || $(a).find('td:nth-child(' + index + ')').text();
+            var bText=$(b).find('td:nth-child(' + index + ')').attr('_order') || $(b).find('td:nth-child(' + index + ')').text();
+
+            if(dataType != 'text'){
+              aText=parseNonText(aText, dataType);
+              bText=parseNonText(bText, dataType);
+
+              return aText > bText ? -1 : bText > aText ? 1 : 0;
+            } else {
+              return aText.localeCompare(bText)
+            }
+          }
+        }
+
+        function parseNonText(data, dataType){
+          switch(dataType){
+            case 'int':
+              return parseInt(data) || 0
+            case 'float':
+              return parseFloat(data) || 0
+            default :
+            return filterStr(data)
+          }
+        }
+
+        //过滤中文字符和$
+        function filterStr(data){
+          if (!data) {
+            return 0;
+          }
+
+          return parseFloat(data.replace(/^[\$a-zA-z\u4e00-\u9fa5 ]*(.*?)[a-zA-z\u4e00-\u9fa5 ]*$/,'$1'));
+        }
+
+        return {'sortStr' : sortStr};
+      })();
+    }
+  </script>
 </template>
