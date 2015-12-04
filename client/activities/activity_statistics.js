@@ -5,7 +5,15 @@ Template.activityStatistics.helpers({
   },
   userprofile: function() {
     // console.log(this);
-    return UserProfiles.findOne({userId: this.userId});
+    var profile = UserProfiles.findOne({userId: this.userId});
+    if (profile === undefined) {
+      profile = {
+        name: "",
+        cellNumber: "",
+        email: ""
+      };
+    }
+    return profile;
   },
 
   isRegister: function() {
@@ -19,6 +27,31 @@ Template.activityStatistics.helpers({
       return "未签到";
     }
   },
+  enrolledUnregisteredCount: function() {
+    return Enrollments.find({isRegistered: false}).count();
+  },
+  unenrolledRegisteredCount: function() {
+    return Registrations.find({isEnrolled: false}).count();
+  },
+  e_num: function(){
+    return Enrollments.find().count();
+  },
+  notCome: function() {
+    var enrolled = Enrollments.find().count();
+    var Registered = Enrollments.find({isRegistered: false}).count();
+    var notCome = enrolled - Registered;
+    return notCome;
+  },
+  statistics: function() {
+    var enrolled = Enrollments.find().count();
+    var Registered = Enrollments.find({isRegistered: false}).count();
+    var notCome = enrolled - Registered;
+
+    var e_num = Enrollments.find().count();
+    var percentage = (notCome / e_num * 100).toFixed(0);
+    var fix = isNaN(percentage)?0:percentage ;
+    return fix + "%";
+  }
 });
 
 Template.activityStatistics.events({
