@@ -5,7 +5,15 @@ Template.activityStatistics.helpers({
   },
   userprofile: function() {
     // console.log(this);
-    return UserProfiles.findOne({userId: this.userId});
+    var profile = UserProfiles.findOne({userId: this.userId});
+    if (profile === undefined) {
+      profile = {
+        name: "",
+        cellNumber: "",
+        email: ""
+      };
+    }
+    return profile;
   },
 
   isRegister: function() {
