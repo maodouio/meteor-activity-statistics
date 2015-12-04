@@ -8,8 +8,6 @@
           <th datatype="text">微信号</th>
           <th scope="col">真实姓名</th>
           <th datatype="text">签到状态</th>
-<!--           <th datatype="text">手机</th>
-          <th scope="col">邮箱</th> -->
         </tr>
       </thead>
       <!-- <tfoot>
@@ -24,47 +22,11 @@
                  {{#with user}} {{profile.nickname}} {{/with}}
               </a>
             </td>
-
             {{#with userprofile}}
               <td>{{name}}</td>
-              <!-- <td>{{cellNumber}}</td>
-              <td>{{email}}</td> -->
             {{/with}}
             {{#with user}}
               <td>{{isRegister}}</td>
-            {{/with}}
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-
-    <table class="table table-striped">
-      <caption><h3><b>活动签到列表</b></h3></caption>
-      <thead>
-        <tr>
-          <th>微信号</th>
-          <th>姓名</th>
-          <th>手机</th>
-          <th>邮箱</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each registrations}}
-          <tr>
-            <td>
-              <a href='/users/{{userId}}'>
-                <!-- <img src="{{headimgurl}}" style="width: 35px; height: 35px; border-radius: 50%;"/> --> {{#with user}} {{profile.nickname}} {{/with}}
-              </a>
-            </td>
-<!--
-            {{#with user}}
-            <td>{{profile.country}}</td>
-            {{/with}}
-             -->
-            {{#with userprofile}}
-            <td>{{name}}</td>
-            <td>{{cellNumber}}</td>
-            <td>{{email}}</td>
             {{/with}}
           </tr>
         {{/each}}
