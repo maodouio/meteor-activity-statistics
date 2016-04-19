@@ -13,6 +13,11 @@ Meteor.publishComposite("activityStatistics", function(activityId) {
             find: function(registration) {
               return Meteor.users.find({_id: registration.userId});
             },
+          },
+          {
+            find: function(registration) {
+              return UserProfiles.find({userId: registration.userId});
+            },      
           }
         ]
       },
